@@ -1,0 +1,37 @@
+Imports System.Net
+Imports System.Drawing
+Imports System.IO
+Imports System
+
+Module Module1
+    Sub Main()
+        ' URL da imagem que deseja baixar
+        Dim url As String = "https://exemplo.com/imagem.jpg"
+
+        ' Baixar a imagem e salvá-la em um arquivo temporário
+        Dim client As New WebClient()
+        Dim tempFile As String = Path.GetTempFileName()
+        client.DownloadFile(url, tempFile)
+
+        ' Carregar a imagem do arquivo temporário
+        Dim image As Image = Image.FromFile(tempFile)
+
+        ' Converter a imagem em um array de bytes
+        Dim ms As New MemoryStream()
+        image.Save(ms, image.RawFormat)
+        Dim imageBytes As Byte() = ms.ToArray()
+
+        ' Converter o array de bytes em uma string Base64
+        Dim base64String As String = Convert.ToBase64String(imageBytes)
+
+        ' Exibir a string Base64
+        Console.WriteLine(base64String)
+
+        ' Realizar outras operações com a imagem em memória...
+
+        ' Excluir o arquivo temporário
+        File.Delete(tempFile)
+
+        Console.ReadLine()
+    End Sub
+End Module
